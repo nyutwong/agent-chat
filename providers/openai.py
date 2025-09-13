@@ -1,8 +1,8 @@
 import openai
 import os
-from providers.base import BaseAgent
+from base_agent_chat import BaseAgentChat
 
-class OpenAIAgent(BaseAgent):
+class OpenAIAgent(BaseAgentChat):
     def __init__(self, api_key, model):
         """
         ChatGPT Agent

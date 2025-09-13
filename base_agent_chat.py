@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class BaseAgent(ABC):
+class BaseAgentChat(ABC):
     def __init__(self, model):
         """
         Base Agent class that defines common functionality for all agents

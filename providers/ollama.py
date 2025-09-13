@@ -1,8 +1,8 @@
 import requests
 import os
-from providers.base import BaseAgent
+from base_agent_chat import BaseAgentChat
 
-class OllamaAgent(BaseAgent):
+class OllamaAgent(BaseAgentChat):
     def __init__(self, model, host, port):
         """
         Ollama Agent
