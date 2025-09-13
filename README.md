@@ -14,8 +14,18 @@
 
 ## การติดตั้ง
 
-1. ติดตั้ง dependencies:
+1. สร้าง virtual environment และติดตั้ง dependencies:
 ```bash
+# สร้าง virtual environment
+uv venv
+
+# เปิดใช้งาน virtual environment
+# สำหรับ Windows
+venv\Scripts\activate
+# สำหรับ macOS/Linux
+source venv/bin/activate
+
+# ติดตั้ง dependencies
 uv sync
 ```
 
