@@ -1,10 +1,13 @@
 [project]
 name = "agent-chat"
-version = "0.0.1"
-description = "This project is an AI Agent that can use models from both OpenAI (ChatGPT) and Ollama Providers to help understand AI Agents in a simple way, test various models, and display token usage."
+version = "0.0.2"
+description = "This project is an AI Agent that can use models from OpenAI (ChatGPT), Ollama, and LangChain Providers to help understand AI Agents in a simple way, test various models, and display token usage."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "langchain>=0.3.27",
+    "langchain-ollama>=0.3.8",
+    "langchain-openai>=0.3.33",
     "openai>=1.0.0",
     "python-dotenv>=1.0.0",
     "requests>=2.32.5",

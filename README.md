@@ -1,10 +1,10 @@
 # AI Chat Agent
 
-โปรเจกต์นี้เป็น AI Agent ที่สามารถใช้ models ได้ทั้ง OpenAI (ChatGPT) และ Ollama Providers เพื่อใช้ทำความเข้าใจ AI Agent อย่างง่าย ทดสอบ model ต่างๆ และแสดงจำนวน token ที่ใช้
+โปรเจกต์นี้เป็น AI Agent ที่สามารถใช้ models ได้ทั้ง OpenAI (ChatGPT), Ollama และ LangChain Providers เพื่อใช้ทำความเข้าใจ AI Agent อย่างง่าย ทดสอบ model ต่างๆ และแสดงจำนวน token ที่ใช้
 
 ## Features
 
-- 🤖 รองรับทั้ง OpenAI และ Ollama Provider
+- 🤖 รองรับทั้ง OpenAI, Ollama และ LangChain Provider
 - 🔄 เลือก model ได้ตามต้องการผ่านเมนูโต้ตอบ
 - 💬 Chat interface แบบ interactive
 - 📊 แสดง token usage (input/output tokens)
@@ -64,8 +64,9 @@ uv run python main.py
 ```
 
 เมื่อรันโปรแกรม คุณจะได้รับการถามเพื่อเลือก:
-1. AI provider (Ollama หรือ OpenAI)
+1. AI provider (Ollama, OpenAI หรือ LangChain)
 2. Model ที่ต้องการใช้
+3. สำหรับ LangChain คุณสามารถเลือก model provider (Ollama หรือ OpenAI) ได้ด้วย
 
 คุณสามารถกด Enter เพื่อใช้ค่า default ในแต่ละขั้นตอน
 
@@ -79,28 +80,40 @@ uv run python main.py
 
 ### OpenAI
 ```python
-from models.openai import ChatGPTAgent
+from providers.openai import OpenAIAgent
 
 # สร้าง agent
-agent = ChatGPTAgent(api_key="your_api_key", model="gpt-4o-mini")
+agent = OpenAIAgent(api_key="your_api_key", model="gpt-4o-mini")
 
 # ส่งข้อความ
-response = agent.chat("สวัสดี")
+response = agent.chat("สวัสดี", system_prompt=None)
 print(response)
 ```
 
 ### Ollama
 ```python
-from models.ollama import OllamaAgent
+from providers.ollama import OllamaAgent
 
 # สร้าง agent
-agent = OllamaAgent(model="llama3.1-8b-instruct")
+agent = OllamaAgent(host="localhost", port=11434, model="llama3.1-8b-instruct")
 
 # ส่งข้อความพร้อม system prompt
 response = agent.chat(
     "อธิบายเรื่อง AI", 
     system_prompt="คุณเป็นผู้เชี่ยวชาญด้าน AI"
 )
+print(response)
+```
+
+### LangChain
+```python
+from providers.langchain import LangchainAgent
+
+# สร้าง agent
+agent = LangchainAgent(model="scb10x/llama3.1-typhoon2-8b-instruct", model_provider="ollama")
+
+# ส่งข้อความ
+response = agent.chat("อธิบายเรื่อง AI", system_prompt="คุณเป็นผู้เชี่ยวชาญด้าน AI")
 print(response)
 ```
 

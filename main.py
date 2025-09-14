@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from providers.openai import OpenAIAgent
 from providers.ollama import OllamaAgent
+from providers.langchain import LangchainAgent
 
 load_dotenv()
 
@@ -15,11 +16,14 @@ def main():
     print("เลือก AI provider:")
     print("1. Ollama (default)")
     print("2. OpenAI")
-    provider_choice = input("เลือก (1/2) [กด Enter เพื่อใช้ default]: ").strip()
+    print("3. Langchain")
+    provider_choice = input("เลือก (1/2/3) [กด Enter เพื่อใช้ default]: ").strip()
     
     # Set provider based on choice
     if provider_choice == "2":
         provider = "openai"
+    elif provider_choice == "3":
+        provider = "langchain"
     else:
         provider = "ollama"  # Default or if user pressed Enter or chose 1
     
@@ -34,6 +38,22 @@ def main():
         
         agent = OpenAIAgent(api_key=os.getenv("OPENAI_API_KEY"), model=model_name)
         ai_name = "OpenAI"
+    elif provider == "langchain":
+        default_provider = os.getenv("LANGCHAIN_PROVIDER", "ollama")
+        
+        model_provider = input(f"เลือก model provider [ollama/openai] (default: {default_provider}): ").strip()
+        if model_provider == "":
+            model_provider = default_provider
+
+        default_model = os.getenv("OLLAMA_MODEL", "scb10x/llama3.1-typhoon2-8b-instruct") if model_provider == "ollama" else os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+        print(f"\nเลือก Langchain model (default: {default_model}):")
+        model_name = input("เลือก model [กด Enter เพื่อใช้ default]: ").strip()
+        if model_name == "":
+            model_name = default_model
+            
+            
+        agent = LangchainAgent(model=model_name, model_provider=model_provider)
+        ai_name = "Langchain"
     else:  # ollama
         default_model = os.getenv("OLLAMA_MODEL")
         print(f"\nเลือก Ollama model (default: {default_model}):")
@@ -45,7 +65,10 @@ def main():
         agent = OllamaAgent(host=os.getenv("OLLAMA_HOST"), port=os.getenv("OLLAMA_PORT"), model=model_name)
         ai_name = "Ollama"
     
-    print(f"\n🤖 AI Agent - Using {provider.upper()} with model: {model_name}")
+    if provider == "langchain":
+        print(f"\n🤖 AI Agent - Using {provider.upper()} with model: {model_name} (provider: {model_provider})")
+    else:
+        print(f"\n🤖 AI Agent - Using {provider.upper()} with model: {model_name}")
     print("=" * 50)
     
     # System prompt
